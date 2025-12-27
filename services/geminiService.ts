@@ -2,11 +2,10 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { BidItem } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Always use const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getBidInsights = async (bids: BidItem[]) => {
-  if (!process.env.API_KEY) return "API Key가 설정되지 않았습니다.";
-  
   const bidSummary = bids.slice(0, 10).map(b => ({
     title: b.title,
     price: b.basePrice,
@@ -38,8 +37,12 @@ export const generateMarketingMessage = async (bid: BidItem, targetType: '축하
         발주처: ${bid.organization}
         낙찰업체: ${bid.winner || 'N/A'}
         
-        이 정보를 바탕으로 (주)진주정보통신의 전문성을 강조한 ${targetType} 메시지를 200자 내외로 작성해줘. 
+        이 정보를 바탕으로 (주)진주정보통신의 전문성을 강조한 ${targetType} 메시지를 250자 내외로 작성해줘. 
         진주정보통신은 경남 진주에 위치한 통신·네트워크 공사 전문 업체야.
+        
+        필수 포함 사항:
+        1. 연락처: 010-8758-5959 (진주정보통신 담당자)
+        2. 메시지 마지막에 "문의 사항이 있으시면 언제든 위 연락처로 연락 주시기 바랍니다."라는 취지의 문구를 포함해줘.
       `,
     });
     return response.text;
