@@ -1,37 +1,44 @@
 
 import React from 'react';
 
-const DashboardHeader: React.FC = () => {
+interface Props {
+  filteredDataCount?: number;
+}
+
+const DashboardHeader: React.FC<Props> = ({ filteredDataCount = 0 }) => {
   return (
-    <header className="bg-gradient-to-r from-blue-900 via-blue-800 to-slate-900 text-white p-6 rounded-b-2xl shadow-xl border-b border-blue-700/50 mb-8">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="flex items-center gap-4">
-          <div className="bg-white p-3 rounded-xl shadow-inner">
-             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-xl">진</div>
-          </div>
+    <header className="bg-white/80 backdrop-blur-xl text-slate-900 px-8 py-5 border-b border-slate-200 shadow-sm relative z-20 overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-8 max-w-7xl mx-auto">
+        <div className="flex items-center gap-6">
+          <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-xl rotate-3">진</div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">진주정보통신 입찰·낙찰 마스터</h1>
-            <p className="text-blue-200 text-sm mt-1">공공기관 통신·전기·네트워크 공사 실시간 데이터 분석 엔진</p>
+            <div className="flex items-center gap-2 mb-0.5">
+               <h1 className="text-xl font-black tracking-tighter text-slate-900">진주정보통신</h1>
+               <div className="h-4 w-[2px] bg-blue-600 opacity-30"></div>
+               <span className="text-sm font-black text-blue-600 tracking-tight uppercase">Intelligence</span>
+            </div>
+            <p className="text-slate-400 text-[10px] font-bold tracking-tight uppercase opacity-60">G2B Market Analysis & AI Communication Hub</p>
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full md:w-auto">
-          <MetricCard label="오늘의 신규 공고" value="12건" trend="+2" />
-          <MetricCard label="낙찰 진행률" value="94.2%" trend="+0.5%" />
-          <MetricCard label="총 수주액 (당월)" value="12.4억" trend="+15%" />
-          <MetricCard label="경쟁 강도" value="중간" color="text-yellow-400" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full md:w-auto">
+          <MetricCard label="필터링" value={filteredDataCount.toString()} unit="건" trend="LIVE" />
+          <MetricCard label="낙찰 성공률" value="94.2" unit="%" />
+          <MetricCard label="예측 규모" value="12.4" unit="억" />
+          <MetricCard label="엔진" value="ACTIVE" color="text-emerald-500" />
         </div>
       </div>
     </header>
   );
 };
 
-const MetricCard: React.FC<{ label: string; value: string; trend?: string; color?: string }> = ({ label, value, trend, color }) => (
-  <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-3 rounded-xl">
-    <p className="text-white/60 text-xs font-medium mb-1">{label}</p>
-    <div className="flex items-baseline gap-2">
-      <span className={`text-lg font-bold ${color || 'text-white'}`}>{value}</span>
-      {trend && <span className="text-[10px] text-emerald-400 font-bold">{trend}</span>}
+const MetricCard: React.FC<{ label: string; value: string; unit?: string; trend?: string; color?: string }> = ({ label, value, unit, trend, color }) => (
+  <div className="bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl transition-all hover:bg-white hover:shadow-sm">
+    <p className="text-slate-400 text-[9px] font-black uppercase tracking-wider mb-1 opacity-70">{label}</p>
+    <div className="flex items-baseline gap-1">
+      <span className={`text-sm font-black tracking-tight ${color || 'text-slate-800'}`}>{value}</span>
+      {unit && <span className="text-[10px] font-bold text-slate-300">{unit}</span>}
+      {trend && <span className="text-[9px] font-black ml-1 text-blue-500 animate-pulse">{trend}</span>}
     </div>
   </div>
 );
