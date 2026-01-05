@@ -9,6 +9,16 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
+      preview: {
+        port: 4173,
+        host: '0.0.0.0',
+        strictPort: false,
+        allowedHosts: [
+          '4173-ixn3ggjtfgmw6967g6693-dfc00ec5.sandbox.novita.ai',
+          'localhost',
+          '.sandbox.novita.ai'
+        ]
+      },
       plugins: [react()],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
